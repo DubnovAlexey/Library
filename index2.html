@@ -8,10 +8,15 @@
 </head>
 <body>
 
+<div class="clock-container" id="clock"></div>
+
+<audio id="bg-music" preload="auto"></audio>
+<button id="play-btn" class="blinking-button">🎵 Включить музыку</button>
+
 <div class="top-container">
     <h1>Моя библиотека</h1>
-    <div id="clock" class="card clock-card"></div>
     <form id="bookForm" class="card">
+        <h2>Добавить книгу</h2>
         <label>
             ISBN
             <input type="text" id="isbn" required>
@@ -51,8 +56,6 @@
     </div>
 </div>
 
-<audio id="bg-music" preload="auto"></audio>
-<button id="play-btn" class="blinking-button">🎵 Включить музыку</button>
 <canvas id="explosion-canvas"></canvas>
 
 <script src="homrwork2.js"></script>
