@@ -1,0 +1,45 @@
+<!DOCTYPE html> <html lang="ru"> <head>
+    <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Библиотека и часы</title> <link href="style.css" rel="stylesheet">
+</head>
+<body> <div id="clock" class="card"></div>
+
+<div class="library-container">
+    <h1>Моя библиотека</h1> <form id="bookForm" class="card">
+    <label>ISBN:
+        <input type="text" id="isbn" required> </label>
+    <label>Название:
+        <input type="text" id="title" required> </label>
+    <label>Автор:
+        <input type="text" id="author" required> </label>
+    <label>Год издания:
+        <input type="number" id="year" required> </label>
+    <button type="submit" class="add-btn">Добавить книгу</button> </form>
+
+    <div class="table-card card">
+        <table id="libraryTable" aria-describedby="table-desc">
+            <caption id="table-desc" style="display:none;">Список книг</caption>
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>ISBN</th>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Год</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody></tbody> </table>
+    </div>
+
+    <audio id="bg-music" preload="auto"></audio>
+
+    <button id="play-btn" class="blinking-button">🎵 Включить музыку</button>
+</div>
+
+<canvas id="explosion-canvas"></canvas>
+
+<script src="homrwork2.js"></script>
+<audio id="firework-sound" preload="auto" src="music/11.mp3"></audio>
+
+</body>
+</html>

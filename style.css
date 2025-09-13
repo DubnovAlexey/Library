@@ -1,0 +1,219 @@
+/* ====== root-переменные (дефолты) ====== */
+:root{
+    --accent: orangered;        /* акцентный цвет */
+    --border-radius: .5rem;    /* скругление карточек */
+    --card-background: #f8f8f8;/* фон карточки */
+    --distance: 0;             /* дефолтное значение distance для линтеров/анимаций */
+    --deg: 0deg;               /* дефолтный угол */
+    --shadow-x: 0;             /* дефолтная тень X */
+    --shadow-y: 0;             /* дефолтная тень Y */
+}
+
+/* Сброс и box-sizing */
+*, *::before, *::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Страница */
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1.5rem;
+    padding: 2rem;
+    background: rgba(191, 220, 137, 0.93);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Контейнер */
+.library-container{
+    width: 100%;
+    max-width: 1300px; /* Увеличил контейнер на 15% */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+#libraryTable {
+    width: 100%;
+    font-size: 1.3rem; /* Увеличил текст на 15% */
+}
+
+#libraryTable th,
+#libraryTable td {
+    padding: 1.3rem; /* Увеличил отступы на 15% */
+}
+
+
+/* Заголовок */
+h1{
+    text-align: center;
+    color: #091c7e;
+    margin-bottom: .2rem;
+}
+
+/* Карточки (decor) */
+.card{
+    --light: rgba(255,255,255, calc(1 - var(--distance, 0)));
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 1.2rem;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.07);
+}
+
+/* свечение градиента */
+.card::before{
+    content: "";
+    position: absolute;
+    inset: -0.45rem;
+    border-radius: calc(var(--border-radius) + 0.1rem);
+    z-index: -1;
+    background: conic-gradient(
+            from calc(125deg + var(--deg, 0deg)),
+            var(--accent),
+            var(--accent) 70%,
+            var(--light) 90%,
+            var(--accent)
+    );
+}
+
+/* мягкая тень */
+.card::after {
+    content: "";
+    position: absolute;
+    inset: -0.4rem;
+    background: #0005;
+    filter: blur(1px);
+    transform: translate(var(--shadow-x, 0), var(--shadow-y, 0)) scale(1.05);
+    border-radius: var(--border-radius);
+    z-index: -2;
+    transition: transform 0.15s ease-out; /* плавное движение */
+}
+
+
+/* Часы */
+#clock{
+    font-size: 2rem; /* Уменьшил размер шрифта */
+    font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif; /* Более тонкий шрифт */
+    font-weight: 200; /* Очень тонкое начертание */
+    color: rgba(13, 228, 228, 0.33);
+    text-align: center;
+    padding: .2rem 1rem; /* Уменьшил отступы */
+    min-width: 20rem;
+}
+
+/* Красные секунды */
+#clock .red-seconds {
+    color: #ab3434;
+    text-shadow: 0 0 15px #c31b1b;
+}
+
+/* Форма: поля расположены столбиком */
+form#bookForm{
+    display: flex;
+    flex-direction: column; /* ключ — вертикальная раскладка */
+    gap: .6rem;
+}
+
+/* Метки: подпись сверху, поле под ней */
+form#bookForm label{
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+    font-size: .98rem;
+}
+
+/* Поля ввода — растягиваются на ширину родителя */
+form#bookForm input[type="text"],
+form#bookForm input[type="number"]{
+    padding: .6rem;
+    border-radius: 6px;
+    border: 1px solid #b3b3b3;
+    background: rgba(255,255,255,0.9);
+    font-size: 1rem;
+    width: 100%;
+}
+
+/* Таблица — увеличенная и читаемая */
+.table-card table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1.1rem; /* можно увеличить до 1.05rem по желанию */
+}
+
+/* Увеличенные ячейки и отступы */
+th, td{
+    padding: .9rem;
+    border: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+}
+
+/* Заголовки */
+th{
+    background: #021159;
+    color: white;
+    font-weight: 600;
+}
+
+/* Чередование цветов строк */
+#libraryTable tbody tr:nth-child(odd) {
+    background: #ffffff;
+}
+
+#libraryTable tbody tr:nth-child(even) {
+    background: #f0f0f0;
+}
+
+/* Кнопки */
+button{
+    padding: .6rem .9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Кнопка добавления */
+.add-btn{
+    background: #003f8a;
+    color: white;
+}
+
+/* Кнопка удаления в таблице */
+.delete-btn{
+    background: #b71c1c;
+    color: white;
+    padding: .45rem .6rem;
+}
+
+/* Кнопка музыки */
+#play-btn{
+    background: #cf0fec;
+    color: #062df6;
+    margin-top: .6rem;
+    box-shadow: 0 0 12px rgb(2, 41, 243);
+
+}
+
+/* Анимация пульса для кнопки */
+@keyframes pulse{
+    0% { opacity: 1; transform: translateY(0); }
+    50% { opacity: 0.7; transform: translateY(-3px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.blinking-button { animation: pulse 1.2s infinite; }
+
+/* Канвас салюта: занимает весь экран */
+#explosion-canvas{
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+}
