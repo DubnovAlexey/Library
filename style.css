@@ -75,17 +75,18 @@ h1 {
 }
 
 /* Свечение градиента */
+/* Усиленное свечение градиента */
 .card::before {
     content: "";
     position: absolute;
-    inset: -0.45rem;
+    inset: -0.45rem; /* Размер окантовки */
     border-radius: calc(var(--border-radius) + 0.1rem);
     z-index: -1;
     background: conic-gradient(
             from calc(125deg + var(--deg, 0deg)),
             var(--accent),
             var(--accent) 70%,
-            var(--light) 90%,
+            white 85%, /* Яркий белый луч */
             var(--accent)
     );
 }
@@ -150,12 +151,12 @@ form#bookForm input[type="number"] {
 #libraryTable {
     width: 100%;
     border-collapse: collapse;
-    font-size: 1.1rem; /* Уменьшил шрифт в нижней части таблицы */
+    font-size: 1rem; /* Уменьшил шрифт в нижней части таблицы */
 }
 
 /* Увеличенные ячейки и отступы */
 th, td {
-    padding: 1.3rem;
+    padding: 0.8rem;
     border: 1px solid #ddd;
     text-align: left;
     vertical-align: middle;
