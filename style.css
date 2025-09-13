@@ -1,12 +1,12 @@
 /* ====== root-переменные (дефолты) ====== */
-:root{
-    --accent: orangered;        /* акцентный цвет */
-    --border-radius: .5rem;    /* скругление карточек */
-    --card-background: #f8f8f8;/* фон карточки */
-    --distance: 0;             /* дефолтное значение distance для линтеров/анимаций */
-    --deg: 0deg;               /* дефолтный угол */
-    --shadow-x: 0;             /* дефолтная тень X */
-    --shadow-y: 0;             /* дефолтная тень Y */
+:root {
+    --accent: orangered; /* акцентный цвет */
+    --border-radius: .5rem; /* скругление карточек */
+    --card-background: #f8f8f8; /* фон карточки */
+    --distance: 0; /* дефолтное значение distance для линтеров/анимаций */
+    --deg: 0deg; /* дефолтный угол */
+    --shadow-x: 0; /* дефолтная тень X */
+    --shadow-y: 0; /* дефолтная тень Y */
 }
 
 /* Сброс и box-sizing */
@@ -22,52 +22,57 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Центрируем всё содержимое по горизонтали */
     justify-content: flex-start;
     gap: 1.5rem;
     padding: 2rem;
-    background: rgba(191, 220, 137, 0.93);
+    background: rgba(175, 223, 82, 0.93);
     font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* Контейнер */
-.library-container{
+/* Контейнер для формы ввода, который остается узким */
+.top-container {
     width: 100%;
-    max-width: 1300px; /* Увеличил контейнер на 15% */
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Контейнер для таблицы, который расширяется */
+.bottom-container {
+    width: 100%;
+    max-width: 1500px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
-#libraryTable {
-    width: 100%;
-    font-size: 1.3rem; /* Увеличил текст на 15% */
-}
-
-#libraryTable th,
-#libraryTable td {
-    padding: 1.3rem; /* Увеличил отступы на 15% */
-}
-
 
 /* Заголовок */
-h1{
+h1 {
     text-align: center;
-    color: #091c7e;
-    margin-bottom: .2rem;
+    color: #060e39;
+    margin-bottom: .1rem;
 }
 
-/* Карточки (decor) */
-.card{
-    --light: rgba(255,255,255, calc(1 - var(--distance, 0)));
+/* Карточки (декор) */
+.card {
+    --light: rgba(255, 255, 255, calc(1 - var(--distance, 0)));
     background: var(--card-background);
     border-radius: var(--border-radius);
     padding: 1.2rem;
     position: relative;
-    border: 1px solid rgba(0,0,0,0.07);
+    border: 1.5px solid rgba(0, 0, 0, 0.07);
 }
 
-/* свечение градиента */
-.card::before{
+/* Добавляем отдельный стиль для контейнера часов */
+.clock-card {
+    width: fit-content;
+    margin: 0 auto; /* Центрируем часы */
+}
+
+/* Свечение градиента */
+.card::before {
     content: "";
     position: absolute;
     inset: -0.45rem;
@@ -82,7 +87,7 @@ h1{
     );
 }
 
-/* мягкая тень */
+/* Мягкая тень */
 .card::after {
     content: "";
     position: absolute;
@@ -95,15 +100,14 @@ h1{
     transition: transform 0.15s ease-out; /* плавное движение */
 }
 
-
-/* Часы */
-#clock{
-    font-size: 2rem; /* Уменьшил размер шрифта */
-    font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif; /* Более тонкий шрифт */
-    font-weight: 200; /* Очень тонкое начертание */
+/* Часы (ваши стили оставлены без изменений) */
+#clock {
+    font-size: 2rem;
+    font-family: 'Helvetica Neue', 'Arial Narrow', sans-serif;
+    font-weight: 200;
     color: rgba(13, 228, 228, 0.33);
     text-align: center;
-    padding: .2rem 1rem; /* Уменьшил отступы */
+    padding: .2rem 1rem;
     min-width: 20rem;
 }
 
@@ -114,14 +118,14 @@ h1{
 }
 
 /* Форма: поля расположены столбиком */
-form#bookForm{
+form#bookForm {
     display: flex;
-    flex-direction: column; /* ключ — вертикальная раскладка */
+    flex-direction: column;
     gap: .6rem;
 }
 
 /* Метки: подпись сверху, поле под ней */
-form#bookForm label{
+form#bookForm label {
     display: flex;
     flex-direction: column;
     gap: .3rem;
@@ -130,32 +134,32 @@ form#bookForm label{
 
 /* Поля ввода — растягиваются на ширину родителя */
 form#bookForm input[type="text"],
-form#bookForm input[type="number"]{
+form#bookForm input[type="number"] {
     padding: .6rem;
     border-radius: 6px;
     border: 1px solid #b3b3b3;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     font-size: 1rem;
     width: 100%;
 }
 
-/* Таблица — увеличенная и читаемая */
-.table-card table{
+/* Таблица */
+#libraryTable {
     width: 100%;
     border-collapse: collapse;
-    font-size: 1.1rem; /* можно увеличить до 1.05rem по желанию */
+    font-size: 1.1rem; /* Уменьшил шрифт в нижней части таблицы */
 }
 
 /* Увеличенные ячейки и отступы */
-th, td{
-    padding: .9rem;
+th, td {
+    padding: 1.3rem;
     border: 1px solid #ddd;
     text-align: left;
     vertical-align: middle;
 }
 
 /* Заголовки */
-th{
+th {
     background: #021159;
     color: white;
     font-weight: 600;
@@ -171,7 +175,7 @@ th{
 }
 
 /* Кнопки */
-button{
+button {
     padding: .6rem .9rem;
     border: none;
     border-radius: 6px;
@@ -179,37 +183,51 @@ button{
 }
 
 /* Кнопка добавления */
-.add-btn{
+.add-btn {
     background: #003f8a;
     color: white;
 }
 
 /* Кнопка удаления в таблице */
-.delete-btn{
+.delete-btn {
     background: #b71c1c;
     color: white;
     padding: .45rem .6rem;
 }
 
 /* Кнопка музыки */
-#play-btn{
+#play-btn {
+    position: fixed; /* Фиксируем кнопку */
+    top: 50px; /* Отступ от верхнего края */
+    right: 50px; /* Отступ от правого края */
     background: #cf0fec;
     color: #062df6;
-    margin-top: .6rem;
+    margin: 0; /* Убираем лишние отступы */
     box-shadow: 0 0 12px rgb(2, 41, 243);
-
 }
 
 /* Анимация пульса для кнопки */
-@keyframes pulse{
-    0% { opacity: 1; transform: translateY(0); }
-    50% { opacity: 0.7; transform: translateY(-3px); }
-    100% { opacity: 1; transform: translateY(0); }
+@keyframes pulse {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-3px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-.blinking-button { animation: pulse 1.2s infinite; }
+
+.blinking-button {
+    animation: pulse 1.2s infinite;
+}
 
 /* Канвас салюта: занимает весь экран */
-#explosion-canvas{
+#explosion-canvas {
     position: fixed;
     inset: 0;
     width: 100%;

@@ -1,20 +1,38 @@
-<!DOCTYPE html> <html lang="ru"> <head>
-    <meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1"> <title>Библиотека и часы</title> <link href="style.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя библиотека</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body> <div id="clock" class="card"></div>
+<body>
 
-<div class="library-container">
-    <h1>Моя библиотека</h1> <form id="bookForm" class="card">
-    <label>ISBN:
-        <input type="text" id="isbn" required> </label>
-    <label>Название:
-        <input type="text" id="title" required> </label>
-    <label>Автор:
-        <input type="text" id="author" required> </label>
-    <label>Год издания:
-        <input type="number" id="year" required> </label>
-    <button type="submit" class="add-btn">Добавить книгу</button> </form>
+<div class="top-container">
+    <h1>Моя библиотека</h1>
+    <div id="clock" class="card clock-card"></div>
+    <form id="bookForm" class="card">
+        <label>
+            ISBN
+            <input type="text" id="isbn" required>
+        </label>
+        <label>
+            Название
+            <input type="text" id="title" required>
+        </label>
+        <label>
+            Автор
+            <input type="text" id="author" required>
+        </label>
+        <label>
+            Год
+            <input type="number" id="year" required>
+        </label>
+        <button class="add-btn" type="submit">Добавить книгу</button>
+    </form>
+</div>
 
+<div class="bottom-container">
     <div class="table-card card">
         <table id="libraryTable" aria-describedby="table-desc">
             <caption id="table-desc" style="display:none;">Список книг</caption>
@@ -28,18 +46,15 @@
                 <th>Действия</th>
             </tr>
             </thead>
-            <tbody></tbody> </table>
+            <tbody></tbody>
+        </table>
     </div>
-
-    <audio id="bg-music" preload="auto"></audio>
-
-    <button id="play-btn" class="blinking-button">🎵 Включить музыку</button>
 </div>
 
+<audio id="bg-music" preload="auto"></audio>
+<button id="play-btn" class="blinking-button">🎵 Включить музыку</button>
 <canvas id="explosion-canvas"></canvas>
 
 <script src="homrwork2.js"></script>
-<audio id="firework-sound" preload="auto" src="music/11.mp3"></audio>
-
 </body>
 </html>
