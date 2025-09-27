@@ -37,6 +37,38 @@ function updateClock() {
 updateClock();
 setInterval(updateClock, 1000);
 
+// --- НОВАЯ ФУНКЦИЯ: ОБНОВЛЕНИЕ СТАТИСТИКИ ---
+function updateStats() {
+    const years = books.map(book => book.year);
+    const total = books.length;
+
+    // Получаем элементы DOM для обновления
+    const totalBooksEl = document.getElementById('totalBooks');
+    const avgYearEl = document.getElementById('avgYear');
+    const minYearEl = document.getElementById('minYear');
+    const maxYearEl = document.getElementById('maxYear');
+
+    if (totalBooksEl) totalBooksEl.textContent = total;
+// Если книг нет, сбрасываем остальные значения
+    if (total === 0) {
+        if (avgYearEl) avgYearEl.textContent = 'N/A';
+        if (minYearEl) minYearEl.textContent = 'N/A';
+        if (maxYearEl) maxYearEl.textContent = 'N/A';
+        return;
+    }
+
+    // Средний год
+    const sum = years.reduce((acc, year) => acc + year, 0);
+    const avg = (sum / total).toFixed(0);
+    if (avgYearEl) avgYearEl.textContent = avg;
+
+    // Минимальный и максимальный год
+    const min = Math.min(...years);
+    const max = Math.max(...years);
+    if (minYearEl) minYearEl.textContent = min;
+    if (maxYearEl) maxYearEl.textContent = max;
+}
+
 
 /* ========== АНИМАЦИЯ КАРТОЧЕК (обновляет --deg и --distance в :root) ========== */
 const cards = document.querySelectorAll('.card');
@@ -157,6 +189,8 @@ function renderBooks(){
 
         libraryTableBody.appendChild(tr);
     });
+    // ВЫЗОВ СТАТИСТИКИ ЗДЕСЬ: после того, как таблица полностью отрендерена
+    updateStats();
 }
 
 // Добавление новой книги — и запускаем салют в месте добавленной строки
@@ -308,3 +342,4 @@ function animateParticles(){
     requestAnimationFrame(animateParticles);
 }
 animateParticles();
+renderBooks(); // <-- Этот вызов при загрузке страницы также запустит статистику
