@@ -39,7 +39,7 @@ setInterval(updateClock, 1000);
 
 // --- НОВАЯ ФУНКЦИЯ: ОБНОВЛЕНИЕ СТАТИСТИКИ ---
 function updateStats() {
-    const years = books.map(book => book.year);
+    const years = books.map(book => +book.year);
     const total = books.length;
 
     // Получаем элементы DOM для обновления

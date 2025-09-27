@@ -238,3 +238,40 @@ th {
     pointer-events: none;
     z-index: 9999;
 }
+/* style.css: Стили для блока статистики */
+
+#stats {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e9f9ff; /* Светлый фон */
+    border-radius: var(--border-radius); /* Используем переменную скругления */
+    border: 1px solid #003f8a; /* Рамка в цвет основной кнопки */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+#stats:hover {
+    transform: translateY(-2px); /* Легкий эффект при наведении */
+}
+
+#stats h2 {
+    color: #003f8a;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dashed #b3d9ff;
+}
+
+#stats p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    display: flex;
+    justify-content: space-between; /* Выравнивание текста и значения по краям */
+    padding-right: 10px; /* Отступ справа */
+}
+
+/* Выделение самих значений */
+#stats span {
+    font-weight: 700;
+    color: var(--accent); /* Используем акцентный цвет 'orangered' */
+}
