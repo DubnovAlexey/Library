@@ -1,0 +1,15 @@
+# IDE (IntelliJ / WebStorm / VS Code)
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies, builds, archives, secrets
+node_modules/
+dist/
+*.zip
+*.rar
+.env
