@@ -51,9 +51,9 @@ function updateStats() {
     if (totalBooksEl) totalBooksEl.textContent = total;
 // Если книг нет, сбрасываем остальные значения
     if (total === 0) {
-        if (avgYearEl) avgYearEl.textContent = 'N/A';
-        if (minYearEl) minYearEl.textContent = 'N/A';
-        if (maxYearEl) maxYearEl.textContent = 'N/A';
+        if (avgYearEl) avgYearEl.textContent = '—';
+        if (minYearEl) minYearEl.textContent = '—';
+        if (maxYearEl) maxYearEl.textContent = '—';
         return;
     }
 
