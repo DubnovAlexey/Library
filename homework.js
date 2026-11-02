@@ -146,9 +146,13 @@ if(playBtn){
 const bookForm = document.getElementById('bookForm');
 const libraryTableBody = document.querySelector('#libraryTable tbody');
 
+// Ключ с префиксом проекта: на dubnovalexey.github.io все проекты делят одно хранилище.
+// Книги, сохранённые раньше под старым ключом myBooks, подхватываются автоматически.
+const BOOKS_KEY = 'library:books';
+
 let books = [];
 try {
-    const raw = localStorage.getItem('myBooks');
+    const raw = localStorage.getItem(BOOKS_KEY) ?? localStorage.getItem('myBooks');
     books = raw ? JSON.parse(raw) : [];
 } catch(e) {
     books = [];
@@ -157,7 +161,7 @@ try {
 
 function saveBooks(){
     try {
-        localStorage.setItem('myBooks', JSON.stringify(books));
+        localStorage.setItem(BOOKS_KEY, JSON.stringify(books));
     } catch(e) {
         console.warn('Не удалось записать в localStorage:', e);
     }
@@ -166,22 +170,24 @@ function saveBooks(){
 // рендер таблицы: каждая запись — отдельная строка (одна под другой)
 function renderBooks(){
     if(!libraryTableBody) return;
-    libraryTableBody.innerHTML = '';
+    libraryTableBody.replaceChildren();
     books.forEach((book, index) => {
         const tr = document.createElement('tr');
 
-        const html = `
-            <td>${index + 1}</td>
-            <td>${book.isbn}</td>
-            <td>${book.title}</td>
-            <td>${book.author}</td>
-            <td>${book.year}</td>
-            <td><button class="delete-btn">Удалить</button></td>
-        `;
+        // То, что ввёл пользователь, выводим через textContent: HTML из полей не исполняется
+        [index + 1, book.isbn, book.title, book.author, book.year].forEach(value => {
+            const td = document.createElement('td');
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+        const actionTd = document.createElement('td');
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'delete-btn';
+        deleteBtn.textContent = 'Удалить';
+        actionTd.appendChild(deleteBtn);
+        tr.appendChild(actionTd);
 
-        tr.innerHTML = html;
-
-        tr.querySelector('.delete-btn').addEventListener('click', () => {
+        deleteBtn.addEventListener('click', () => {
             books.splice(index, 1);
             saveBooks();
             renderBooks();

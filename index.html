@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Моя библиотека</title>
+    <!-- TODO ФАВИКОН: своего значка пока нет. Положите картинку рядом с index.html (например, favicon.png) и уберите знаки комментария со строки ниже -->
+    <!-- <link rel="icon" href="favicon.png"> -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -39,6 +41,7 @@
 
 <div class="bottom-container">
     <div class="table-card card">
+        <div class="table-scroll">
         <table id="libraryTable" aria-describedby="table-desc">
             <caption id="table-desc" style="display:none;">Список книг</caption>
             <thead>
@@ -53,6 +56,7 @@
             </thead>
             <tbody></tbody>
         </table>
+        </div>
         <div id ="stats">
             <h2>Library Statistics</h2>
             <p>Total books: <span id = "totalBooks">0</span></p>
