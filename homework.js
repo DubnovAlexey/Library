@@ -10,6 +10,11 @@
 const clockEl = document.getElementById('clock');
 const tickSound = new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg");
 tickSound.volume = 0.3;
+tickSound.preload = 'none';
+// Сигнал часов начинается после жеста, поэтому запрет autoplay не создаёт предупреждения каждую минуту.
+let clockAudioUnlocked = false;
+document.addEventListener('pointerdown', () => { clockAudioUnlocked = true; }, {once: true});
+document.addEventListener('keydown', () => { clockAudioUnlocked = true; }, {once: true});
 
 function updateClock() {
     const now = new Date();
@@ -26,7 +31,7 @@ function updateClock() {
     }
 
     // Пик-пик на 58 и 59 секунде
-    if (s === 58 || s === 59) {
+    if (clockAudioUnlocked && (s === 58 || s === 59)) {
         tickSound.play().catch(err => console.warn("Проблема с autoplay:", err));
     }
 
@@ -153,7 +158,11 @@ const BOOKS_KEY = 'library:books';
 let books = [];
 try {
     const raw = localStorage.getItem(BOOKS_KEY) ?? localStorage.getItem('myBooks');
-    books = raw ? JSON.parse(raw) : [];
+    const saved = raw ? JSON.parse(raw) : [];
+    // Повреждённая запись не останавливает приложение и не исполняет HTML из хранилища.
+    books = Array.isArray(saved) ? saved.filter(book => book && typeof book === 'object' &&
+        ['isbn', 'title', 'author'].every(field => typeof book[field] === 'string' && book[field].trim()) &&
+        Number.isInteger(Number(book.year)) && Number(book.year) >= 1 && Number(book.year) <= 9999) : [];
 } catch(e) {
     books = [];
     console.warn('Не удалось прочитать localStorage:', e);
@@ -199,6 +208,9 @@ function renderBooks(){
     updateStats();
 }
 
+let volumeRestoreTimer = null;
+let duckedVolume = null;
+
 // Добавление новой книги — и запускаем салют в месте добавленной строки
 bookForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -207,8 +219,8 @@ bookForm.addEventListener('submit', e => {
     const author = document.getElementById('author').value.trim();
     const year = document.getElementById('year').value.trim();
 
-    if (!isbn || !title || !author || !year) {
-        alert('Заполните все поля');
+    if (!isbn || !title || !author || !Number.isInteger(Number(year)) || Number(year) < 1 || Number(year) > 9999) {
+        alert('Заполните все поля; год должен быть целым числом от 1 до 9999.');
         return;
     }
 
@@ -219,7 +231,7 @@ bookForm.addEventListener('submit', e => {
 
     // 🎆 Логика салюта и музыки
     const musicIsPlaying = !audioEl.paused;
-    const initialVolume = audioEl.volume;
+    if (duckedVolume === null) duckedVolume = audioEl.volume;
 
     if (musicIsPlaying) {
         // Заглушаем музыку почти полностью
@@ -231,11 +243,11 @@ bookForm.addEventListener('submit', e => {
     playFireworkSound();
 
     // Возвращаем музыку к нормальной громкости через 4 секунды
-    if (musicIsPlaying) {
-        setTimeout(() => {
-            audioEl.volume = initialVolume;
-        }, 4000);
-    }
+    clearTimeout(volumeRestoreTimer);
+    volumeRestoreTimer = setTimeout(() => {
+        if (duckedVolume !== null) audioEl.volume = duckedVolume;
+        duckedVolume = null;
+    }, 4000);
 });
 
 // отрисуем при загрузке страницы
@@ -244,15 +256,18 @@ renderBooks();
 /* ========== САЛЮТ (канвас) ========== */
 const canvas = document.getElementById('explosion-canvas');
 const ctx = canvas ? canvas.getContext('2d') : null;
-const fireworkSound = new Audio("./music/11.mp3"); // Исправленный путь к звуку салюта
+const fireworkSound = new Audio("./music/11.mp3"); // Звук салюта запускается только действием пользователя
+fireworkSound.preload = 'none';
 
+let fireworkStopTimer = null;
 function playFireworkSound() {
     if (fireworkSound) {
+        clearTimeout(fireworkStopTimer);
         fireworkSound.currentTime = 0;
         fireworkSound.play().catch(err => console.warn("Автопуск заблокирован:", err));
 
         // Останавливаем звук салюта через 3 секунды
-        setTimeout(() => {
+        fireworkStopTimer = setTimeout(() => {
             fireworkSound.pause();
             fireworkSound.currentTime = 0;
         }, 3000);
@@ -322,6 +337,7 @@ class Particle {
 }
 
 let particles = [];
+let particleFrame = 0;
 
 function createExplosion(x, y){
     if(!ctx) return;
@@ -334,10 +350,12 @@ function createExplosion(x, y){
         const shape = shapes[Math.floor(Math.random()*shapes.length)];
         particles.push(new Particle(x, y, color, shape));
     }
+    if (!particleFrame) particleFrame = requestAnimationFrame(animateParticles);
 }
 
 // основной цикл отрисовки частиц
 function animateParticles(){
+    particleFrame = 0;
     if(!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     particles = particles.filter(p => p.alpha > 0 && p.y < window.innerHeight + 200);
@@ -345,7 +363,6 @@ function animateParticles(){
         p.update();
         p.draw();
     }
-    requestAnimationFrame(animateParticles);
+    if (particles.length) particleFrame = requestAnimationFrame(animateParticles);
 }
-animateParticles();
-renderBooks(); // <-- Этот вызов при загрузке страницы также запустит статистику
+// Пустой салют не держит постоянный RAF: он запускается только при добавлении книги.

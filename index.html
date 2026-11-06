@@ -12,7 +12,7 @@
 
 <div class="clock-container" id="clock"></div>
 
-<audio id="bg-music" preload="auto"></audio>
+<audio id="bg-music" preload="none"></audio>
 <button id="play-btn" class="blinking-button">🎵 Включить музыку</button>
 
 <div class="top-container">
@@ -33,7 +33,7 @@
         </label>
         <label>
             Год
-            <input type="number" id="year" required>
+            <input type="number" id="year" min="1" max="9999" step="1" required>
         </label>
         <button class="add-btn" type="submit">Добавить книгу</button>
     </form>
