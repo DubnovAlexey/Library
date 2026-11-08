@@ -75,17 +75,25 @@ function updateStats() {
 }
 
 
-/* ========== АНИМАЦИЯ КАРТОЧЕК (обновляет --deg и --distance в :root) ========== */
+/* ========== АНИМАЦИЯ КАРТОЧЕК (свечение и тень вслед за мышью: --deg, --distance, --shadow-x/y) ========== */
 const cards = document.querySelectorAll('.card');
-const root = document.documentElement;
+// Тень сдвигается к мыши не дальше чем на 12 px. Без ограничения у широкой карточки с таблицей сдвиг доходил
+// до 35 px, тень выходила за край страницы и внизу то появлялась, то пропадала горизонтальная прокрутка.
+const SHADOW_SHIFT_MAX = 12;
+const clampShift = value => Math.max(-SHADOW_SHIFT_MAX, Math.min(SHADOW_SHIFT_MAX, value));
+let pointer = null;
+let cardFrame = 0;
 
-document.addEventListener('mousemove', e => {
-    cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        const distanceX = e.clientX - centerX;
-        const distanceY = e.clientY - centerY;
+// Не чаще одного раза за кадр, и сначала все замеры, потом все записи: браузер не пересчитывает раскладку
+// между карточками
+function updateCards() {
+    cardFrame = 0;
+    if (!pointer) return;
+    const rects = [...cards].map(card => card.getBoundingClientRect());
+    cards.forEach((card, index) => {
+        const rect = rects[index];
+        const distanceX = pointer.x - (rect.left + rect.width / 2);
+        const distanceY = pointer.y - (rect.top + rect.height / 2);
         const dist = Math.sqrt(distanceX ** 2 + distanceY ** 2);
         const maxDist = Math.min(rect.width, rect.height) / 1.5;
         const normalizedDist = Math.min(dist, maxDist) / maxDist;
@@ -93,12 +101,20 @@ document.addEventListener('mousemove', e => {
 
         card.style.setProperty('--deg', `${deg + 90}deg`);
         card.style.setProperty('--distance', String(normalizedDist));
-        card.style.setProperty('--shadow-x', `${distanceX / 20}px`);
-        card.style.setProperty('--shadow-y', `${distanceY / 20}px`);
+        card.style.setProperty('--shadow-x', `${clampShift(distanceX / 20)}px`);
+        card.style.setProperty('--shadow-y', `${clampShift(distanceY / 20)}px`);
     });
+}
+
+document.addEventListener('mousemove', e => {
+    pointer = { x: e.clientX, y: e.clientY };
+    if (!cardFrame) cardFrame = requestAnimationFrame(updateCards);
 });
 
 document.addEventListener('mouseleave', () => {
+    pointer = null;
+    cancelAnimationFrame(cardFrame);
+    cardFrame = 0;
     cards.forEach(card => {
         card.style.setProperty('--shadow-x', `0px`);
         card.style.setProperty('--shadow-y', `0px`);
@@ -130,16 +146,21 @@ audioEl.addEventListener('ended', () => {
     audioEl.play().catch(err => console.warn("Ошибка при автовоспроизведении:", err));
 });
 
-// Кнопка play/pause
+// Кнопка play/pause: значок и подпись меняются вместе (на телефоне видна только кнопка-значок)
+function showMusicState(playing) {
+    playBtn.querySelector('.play-icon').textContent = playing ? '⏸' : '🎵';
+    playBtn.querySelector('.play-text').textContent = playing ? 'Остановить музыку' : 'Включить музыку';
+}
+
 if(playBtn){
     playBtn.addEventListener('click', async () => {
         try {
             if (audioEl.paused) {
                 await audioEl.play();
-                playBtn.textContent = '⏸ Остановить музыку';
+                showMusicState(true);
             } else {
                 audioEl.pause();
-                playBtn.textContent = '🎵 Включить музыку';
+                showMusicState(false);
             }
         } catch (err) {
             console.warn('Ошибка при воспроизведении:', err);
@@ -274,13 +295,13 @@ function playFireworkSound() {
     }
 }
 
+// Размер на экране задаёт CSS (inset: 0; 100% × 100%). Здесь только чёткость: число пикселей холста.
+// Берём ширину окна без полосы прокрутки: window.innerWidth включает её, и холст расширял страницу на её толщину.
 function resizeCanvas(){
     if(!canvas || !ctx) return;
     const dpr = window.devicePixelRatio || 1;
-    canvas.width = Math.floor(window.innerWidth * dpr);
-    canvas.height = Math.floor(window.innerHeight * dpr);
-    canvas.style.width = window.innerWidth + 'px';
-    canvas.style.height = window.innerHeight + 'px';
+    canvas.width = Math.floor(document.documentElement.clientWidth * dpr);
+    canvas.height = Math.floor(document.documentElement.clientHeight * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 window.addEventListener('resize', resizeCanvas);
@@ -344,6 +365,8 @@ function createExplosion(x, y){
     const colors = ['#ff4d4d', '#ffd24d', '#4d94ff', '#4dff88', '#b84dff', '#ff7fbf'];
     const count = 250; // Увеличено количество частиц
     const shapes = ['circle', 'square', 'triangle'];
+    // Полоса прокрутки могла появиться после добавления книг (без события resize): сверяем размер холста
+    if (!particles.length) resizeCanvas();
 
     for(let i=0;i<count;i++){
         const color = colors[Math.floor(Math.random()*colors.length)];

@@ -132,14 +132,16 @@ h1 {
     );
 }
 
-/* Мягкая тень */
+/* Мягкая тень. Отступ постоянный: раньше было -0.4rem и scale(1.05), а 5% от широкой карточки с таблицей —
+   это 64 px, и тень выходила за край страницы (горизонтальная прокрутка 6 px). Вместе со сдвигом к мыши
+   (не больше 12 px, см. homework.js) тень остаётся внутри отступа страницы в 2rem. */
 .card::after {
     content: "";
     position: absolute;
-    inset: -0.4rem;
+    inset: -1.2rem;
     background: #0005;
     filter: blur(1px);
-    transform: translate(var(--shadow-x, 0), var(--shadow-y, 0)) scale(1.05);
+    transform: translate(var(--shadow-x, 0), var(--shadow-y, 0));
     border-radius: var(--border-radius);
     z-index: -2;
     transition: transform 0.15s ease-out;
@@ -293,6 +295,16 @@ th {
         font-size: 1.6rem;
     }
 
+    /* На телефоне часы стоят в начале страницы и уезжают вместе с ней: закреплённые, они закрывали поля формы */
+    .clock-container {
+        position: absolute;
+    }
+
+    /* Отступ страницы здесь 1rem, поэтому и тень карточек ближе */
+    .card::after {
+        inset: -0.9rem;
+    }
+
     h1 {
         font-size: clamp(2rem, 11vw, 3.5rem);
         letter-spacing: .05rem;
@@ -302,9 +314,28 @@ th {
         margin-top: 70px;
     }
 
+    /* Круглая кнопка-значок в правом нижнем углу: длинная подпись закрывала цифры статистики справа */
     #play-btn {
         top: auto;
         bottom: 15px;
+        display: grid;
+        place-items: center;
+        width: 56px;
+        height: 56px;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 1.3rem;
+        line-height: 1;
+    }
+
+    /* Подпись не видна, но экранный диктор её читает */
+    #play-btn .play-text {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
     }
 }
 
