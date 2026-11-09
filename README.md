@@ -52,7 +52,7 @@ Open `index.html` in a browser.
 
 These are proposals, not currently implemented features.
 
-- Visual: show a clear saved/session-only state, a quieter reduced-motion celebration and a book favicon.
+- Visual: show a clear saved/session-only state and a quieter reduced-motion celebration.
 - Engineering: separate book storage, statistics and effects into modules and add permanent malformed-storage/media-overlap tests.
 - Functionality: add search/edit and validated import/export; ISBN lookup can follow as an optional network feature.
 
@@ -110,7 +110,7 @@ HTML5 · CSS3 · JavaScript (DOM, Canvas 2D, `<audio>`, `localStorage`) · GitHu
 
 Это предложения, а не уже реализованные возможности.
 
-- Визуал: показывать состояние «сохранено/только текущая сессия», предусмотреть спокойный reduced-motion салют и favicon книги.
+- Визуал: показывать состояние «сохранено/только текущая сессия» и предусмотреть спокойный reduced-motion салют.
 - Инженерия: разделить хранение книг, статистику и эффекты на модули, закрепить проверки повреждённого storage и пересечения медиа.
 - Функции: поиск/редактирование и валидируемый импорт/экспорт; поиск по ISBN — позднее как необязательная сетевая функция.
 
@@ -160,7 +160,7 @@ HTML5 · CSS3 · JavaScript (DOM, Canvas, `localStorage`) · GitHub Pages
 
 אלה הצעות, לא יכולות שכבר מומשו.
 
-- חזות: להציג מצב שמירה/זיכרון זמני, חגיגה שקטה בהפחתת תנועה וסמל ספר.
+- חזות: להציג מצב שמירה/זיכרון זמני וחגיגה שקטה בהפחתת תנועה.
 - הנדסה: להפריד אחסון, סטטיסטיקה ואפקטים למודולים ולשמור בדיקות נתונים פגומים וחפיפת מדיה.
 - יכולות: חיפוש, עריכה וייבוא/ייצוא מאומת; חיפוש ISBN כאפשרות רשת עתידית.
 
