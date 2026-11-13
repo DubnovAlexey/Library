@@ -350,7 +350,7 @@ th {
     padding: 0.45rem 1rem;
     border-radius: var(--border-radius);
     background: var(--card-background);
-    color: var(--accent);
+    color: #d13900;
     font-weight: 600;
     text-decoration: none;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
@@ -359,7 +359,7 @@ th {
 
 .repo-link:hover,
 .repo-link:focus-visible {
-    background: var(--accent);
+    background: #d13900;
     color: #fff;
     outline: none;
 }
